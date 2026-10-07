@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Happy Anniversary 💙</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+html{background:#071433}
+body{font-family:Poppins,sans-serif;color:#e6efff;background:linear-gradient(180deg,#071433 0%,#0e2a66 40%,#1a4a9c 70%,#0a1c4a 100%);min-height:100vh;overflow-x:hidden}
+.script{font-family:'Dancing Script',cursive}
+.glass{background:rgba(255,255,255,.07);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s,transform .8s}.rv.in{opacity:1;transform:none}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+main,footer{position:relative;z-index:1}
+.strip{background:#f7f4ee;padding:10px 10px 8px;box-shadow:0 14px 30px rgba(0,0,20,.45);width:min(44vw,210px)}
+.frame{position:relative;aspect-ratio:4/3;margin-bottom:8px;background:linear-gradient(135deg,#9ec1ff,#ffb3c9);overflow:hidden}
+.frame img{width:100%;height:100%;object-fit:cover;filter:grayscale(.35) contrast(1.1) sepia(.2)}
+.frame span{position:absolute;left:4px;bottom:3px;font-size:9px;background:rgba(255,255,255,.85);color:#16306b;padding:0 5px;border-radius:99px}
+.tl:before{content:"";position:absolute;left:19px;top:0;bottom:0;width:2px;background:linear-gradient(#ffd98a,#ff8fb1,#9ec9ff)}
+.fall{position:fixed;top:-30px;z-index:60;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.2}}
+@keyframes beat{50%{transform:scale(1.2)}}.beat{animation:beat 1.2s infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}.bob{animation:bob 2.4s ease-in-out infinite}
+.paper{max-height:0;overflow:hidden;transition:max-height 1.4s ease}.paper.open{max-height:1400px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<!-- LOADING -->
+<div id="load" class="fixed inset-0 z-[100] flex flex-col items-center justify-center text-center px-6 transition-opacity duration-1000" style="background:#071433">
+  <i class="bi bi-suit-heart-fill beat text-6xl text-pink-300"></i>
+  <p class="script text-3xl mt-5">Menyiapkan kejutan untukmu…</p>
+  <div class="w-56 h-1.5 rounded-full bg-white/10 mt-6 overflow-hidden"><div id="bar" class="h-full w-0 bg-gradient-to-r from-sky-300 to-pink-300 transition-all"></div></div>
+  <p id="lt" class="text-xs text-sky-200/70 mt-3">Menghitung bintang…</p>
+</div>
+
+<main>
+<!-- HERO -->
+<section class="min-h-screen flex flex-col items-center justify-center text-center px-6">
+  <i class="bi bi-stars text-3xl text-amber-200 bob"></i>
+  <p class="mt-4 text-sky-200/80 text-sm">untuk seseorang yang paling bersinar di langitku</p>
+  <h1 class="script text-6xl sm:text-8xl mt-3 leading-tight">Happy Anniversary,<br><span class="to text-pink-200">Sayang</span></h1>
+  <div id="count" class="glass rounded-2xl px-5 py-4 mt-8 grid grid-cols-4 gap-3 sm:gap-6 text-center"></div>
+  <p class="text-xs text-sky-200/70 mt-3">…dan aku masih jatuh cinta di setiap detiknya</p>
+  <button id="wish" class="mt-8 glass rounded-full px-6 py-2.5 hover:bg-white/15 transition"><i class="bi bi-star-fill text-amber-200"></i> Make a wish</button>
+  <p id="wt" class="text-sm text-amber-100 mt-3 h-5"></p>
+  <a href="#story" class="absolute bottom-6 text-sky-200/70 bob"><i class="bi bi-chevron-double-down text-2xl"></i></a>
+</section>
+
+<!-- OUR STORY -->
+<section id="story" class="max-w-xl mx-auto px-6 py-20">
+  <h2 class="script text-5xl text-center rv">Our Story</h2>
+  <p class="text-center text-sky-200/80 text-sm mt-2 mb-12 rv">Sebuah cerita kecil yang jadi rumah besar</p>
+  <div class="tl relative space-y-8" id="tl"></div>
+</section>
+
+<!-- PHOTOBOOTH -->
+<section class="px-4 py-20 text-center">
+  <h2 class="script text-5xl rv">Photobooth Kita</h2>
+  <p class="text-sky-200/80 text-sm mt-2 mb-10 rv">Dua strip, delapan pose, nol pose yang benar-benar normal</p>
+  <div id="booth" class="flex justify-center gap-4 sm:gap-10 rv"></div>
+</section>
+
+<!-- LETTER -->
+<section class="max-w-xl mx-auto px-6 py-20 text-center">
+  <h2 class="script text-5xl rv">A Letter for You</h2>
+  <p class="text-sky-200/80 text-sm mt-2 mb-8 rv">Ada surat yang menunggu dibuka</p>
+  <button id="env" class="glass rounded-3xl px-10 py-6 hover:bg-white/15 transition">
+    <i id="envi" class="bi bi-envelope-heart-fill text-6xl text-pink-200 bob block"></i>
+    <span class="text-sm block mt-2">Ketuk untuk membuka</span>
+  </button>
+  <div id="paper" class="paper mt-6 text-left">
+    <div class="rounded-2xl p-6 sm:p-9 text-[#1a2f66]" style="background:#fff9ee;box-shadow:0 20px 50px rgba(0,0,30,.5)">
+      <p class="script text-3xl">Untuk <span class="to">Sayang</span>,</p>
+      <p class="mt-4 leading-8 text-[15px]">Aku pernah mengira cinta itu seperti bintang jatuh: indah, tapi cepat hilang. Ternyata aku salah. Cinta itu kamu. Hadir pelan-pelan, bertahan lama, dan setiap hari bikin langitku lebih terang.</p>
+      <p class="mt-4 leading-8 text-[15px]">Terima kasih sudah sabar menghadapi aku yang suka lupa jawab chat, yang kalau lapar jadi nyebelin, dan yang sering pura-pura tahu jalan padahal sudah salah belok tiga kali. Kamu tetap duduk di sebelahku sambil senyum. Itu salah satu hal paling romantis yang pernah ada.</p>
+      <p class="mt-4 leading-8 text-[15px]">Hari ini aku cuma mau bilang: aku bahagia. Bukan karena semuanya sempurna, tapi karena ada kamu di tengah semua yang tidak sempurna itu. Kalau besok aku harus memilih lagi, jawabannya tetap kamu.</p>
+      <p class="mt-5 text-right script text-3xl">Selamanya milikmu,<br><span id="from">Aku</span> 💙</p>
+    </div>
+  </div>
+</section>
+
+<!-- LITTLE THINGS -->
+<section class="max-w-3xl mx-auto px-6 py-20">
+  <h2 class="script text-5xl text-center rv">Little Things I Want You to Know</h2>
+  <div id="little" class="grid sm:grid-cols-2 gap-4 mt-10"></div>
+</section>
+
+<!-- FUN -->
+<section class="max-w-xl mx-auto px-6 py-20 text-center">
+  <h2 class="script text-5xl rv">Pertanyaan Penting</h2>
+  <div class="glass rounded-3xl p-6 mt-8 rv">
+    <p class="text-lg">Masih mau jadi pasanganku sampai kita tua dan rambut kita sama-sama putih?</p>
+    <div id="arena" class="relative h-28 mt-4">
+      <button id="yes" class="absolute left-[12%] top-4 bg-pink-400 hover:bg-pink-300 text-white rounded-full px-7 py-2.5 shadow-lg"><i class="bi bi-heart-fill"></i> Mau dong</button>
+      <button id="no" class="absolute left-[58%] top-4 bg-white/15 rounded-full px-6 py-2.5 transition-all duration-200">Nggak</button>
+    </div>
+    <p id="ans" class="text-pink-200 h-6"></p>
+  </div>
+  <div class="glass rounded-3xl p-6 mt-6 rv">
+    <p class="text-sm text-sky-200/80">Generator alasan kenapa aku sayang kamu</p>
+    <p id="why" class="script text-3xl mt-3 min-h-[5rem] flex items-center justify-center">Tekan tombolnya ya…</p>
+    <button id="whyb" class="mt-3 bg-sky-400/30 hover:bg-sky-400/50 rounded-full px-6 py-2"><i class="bi bi-magic"></i> Alasan baru</button>
+  </div>
+</section>
+
+<!-- GIFT -->
+<section class="max-w-xl mx-auto px-6 py-20 text-center">
+  <h2 class="script text-5xl rv">Kado untukmu</h2>
+  <p class="text-sky-200/80 text-sm mt-2 mb-8 rv">Kadonya kecil, tapi bisa ditagih kapan saja</p>
+  <button id="gift" class="bob"><i class="bi bi-gift-fill text-8xl text-pink-300 drop-shadow-[0_0_25px_rgba(255,143,177,.6)]"></i></button>
+  <p id="gh" class="text-sm mt-2">Ketuk kadonya</p>
+  <div id="coupons" class="grid gap-3 mt-6 text-left hidden"></div>
+</section>
+</main>
+
+<footer class="text-center px-6 pt-10 pb-16">
+  <i class="bi bi-infinity text-4xl text-amber-200"></i>
+  <p class="script text-4xl mt-3">Kamu adalah rasi bintang favoritku.</p>
+  <p class="text-sm text-sky-200/70 mt-2">Dibuat dengan seluruh hati, hanya untukmu 💙</p>
+</footer>
+
+<script>
+/* ===== EDIT DI SINI ===== */
+const C={to:"Sayang",from:"Aku",start:"2023-10-07T00:00:00"};
+const U=id=>`https://images.unsplash.com/photo-${id}?w=500&h=380&fit=crop&q=70`;
+const PH=[
+ ["1518199266791-5375a83190b7","Pose normal"],["1529333166437-7750a6dd5a70","Pura-pura serius"],
+ ["1516589178581-6cd7833ae3b2","Lupa ada kamera"],["1522673607200-164d1b6ce486","Pose jujur"],
+ ["1494774157365-9e04c6720e47","Kamu ketawa"],["1474552226712-ac0f0961a954","Aku lihatin kamu"],
+ ["1515934751635-c81c6bc9a2d8","Gagal fokus"],["1517154421773-0529f29ea451","Cium kilat"]];
+const TL=[
+ ["bi-eye-fill","Pertama kali melihatmu","Kamu cuma orang asing yang senyumnya bikin aku lupa mau ngomong apa."],
+ ["bi-chat-heart-fill","Chat pertama","Balasanmu cuma “hehe”, tapi pipiku pegal karena senyum semalaman."],
+ ["bi-cup-hot-fill","Kencan pertama","Aku bilang santai. Padahal jantungku sedang lomba lari."],
+ ["bi-suit-heart-fill","Hari kita resmi","Tanggal yang sejak itu jadi favorit di semua kalender."],
+ ["bi-stars","Sampai hari ini","Setiap hari bersamamu terasa seperti bonus dari semesta."]];
+const LT=[
+ ["bi-emoji-laughing-fill","Aku hafal suara tawamu, dan itu lagu favoritku."],
+ ["bi-house-heart-fill","Kamu bukan sekadar tempat pulang. Kamu rumahnya."],
+ ["bi-trophy-fill","Aku diam-diam bangga setiap lihat kamu berjuang."],
+ ["bi-moon-stars-fill","Kalau dunia terlalu berisik, aku cukup dengar kamu."],
+ ["bi-egg-fried","Makanan terakhirku tetap buatmu. Kecuali sambalnya, itu aku."],
+ ["bi-infinity","Aku pilih kamu lagi, termasuk saat ngantuk dan lapar."]];
+const WHY=["Karena kamu kalau ketawa, dunia ikut nyala.","Karena kamu sabar sama aku yang suka salah belok.","Karena pelukanmu itu Wi-Fi terbaik: langsung terhubung.","Karena kamu satu-satunya yang boleh cicip makananku.","Karena kamu bikin hal biasa jadi kenangan.","Karena kamu lucu, bahkan waktu lagi kesel.","Karena di samping kamu, aku jadi versi terbaikku."];
+const CP=[["bi-hearts","Kupon peluk 10 menit tanpa gangguan"],["bi-film","Kupon nonton film pilihanmu (aku nggak protes)"],["bi-cup-straw","Kupon jajan apa pun yang kamu mau"],["bi-chat-quote-fill","Kupon curhat panjang, aku dengerin sepenuh hati"]];
+/* ========================== */
+const $=s=>document.querySelector(s);
+document.querySelectorAll('.to').forEach(e=>e.textContent=C.to);$('#from').textContent=C.from;
+
+// Stars
+const cv=$('#stars'),cx=cv.getContext('2d');let S=[],SH=[];
+function rs(){cv.width=innerWidth;cv.height=innerHeight;S=Array.from({length:Math.min(170,innerWidth/5)},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.4+.3,p:Math.random()*6,s:Math.random()*.03+.01,g:Math.random()<.12}))}
+rs();addEventListener('resize',rs);
+function shoot(){SH.push({x:Math.random()*cv.width*.8+cv.width*.2,y:Math.random()*cv.height*.4,l:0})}
+(function d(){cx.clearRect(0,0,cv.width,cv.height);
+ S.forEach(s=>{s.p+=s.s;const a=.35+.65*Math.abs(Math.sin(s.p));cx.fillStyle=s.g?`rgba(255,217,138,${a})`:`rgba(200,225,255,${a})`;cx.beginPath();cx.arc(s.x,s.y,s.r,0,7);cx.fill()});
+ SH=SH.filter(h=>h.l<1);SH.forEach(h=>{h.l+=.018;const x=h.x-h.l*420,y=h.y+h.l*220;const g=cx.createLinearGradient(x,y,x+90,y-48);g.addColorStop(0,'rgba(255,255,255,'+(1-h.l)+')');g.addColorStop(1,'rgba(255,255,255,0)');cx.strokeStyle=g;cx.lineWidth=2;cx.beginPath();cx.moveTo(x,y);cx.lineTo(x+90,y-48);cx.stroke()});
+ requestAnimationFrame(d)})();
+setInterval(shoot,3800);
+
+// Confetti
+function burst(n=40){const e=['💙','⭐','✨','💖','🌟'];for(let i=0;i<n;i++){const f=document.createElement('span');f.className='fall';f.textContent=e[i%5];f.style.left=Math.random()*100+'vw';f.style.fontSize=12+Math.random()*18+'px';f.style.animationDuration=2.5+Math.random()*2.5+'s';f.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(f);setTimeout(()=>f.remove(),6500)}}
+
+// Counter
+function tick(){let t=Math.max(0,Date.now()-new Date(C.start)),m=t/6e4|0;const v=[[m/1440|0,'hari'],[(m/60|0)%24,'jam'],[m%60,'menit'],[(t/1e3|0)%60,'detik']];
+ $('#count').innerHTML=v.map(([n,l])=>`<div><div class="text-2xl sm:text-4xl font-medium">${n}</div><div class="text-[11px] text-sky-200/70">${l}</div></div>`).join('')}
+tick();setInterval(tick,1000);
+
+// Render
+$('#tl').innerHTML=TL.map(([i,t,d])=>`<div class="relative pl-14 rv"><div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-[#0e2a66] border border-amber-200/60 flex items-center justify-center text-pink-200"><i class="bi ${i}"></i></div><h3 class="font-medium text-lg">${t}</h3><p class="text-sky-100/80 text-sm leading-relaxed mt-1">${d}</p></div>`).join('');
+$('#booth').innerHTML=[0,4].map((o,k)=>`<div class="strip" style="transform:rotate(${k?3:-3}deg)">${PH.slice(o,o+4).map(([id,c])=>`<div class="frame"><img src="${U(id)}" alt="${c}" loading="lazy" onerror="this.remove()"><span>${c}</span></div>`).join('')}<p class="script text-center text-[#16306b] text-lg">us ${k?'again':'first'} 💙</p></div>`).join('');
+$('#little').innerHTML=LT.map(([i,t])=>`<div class="glass rounded-2xl p-5 flex gap-4 items-start rv"><i class="bi ${i} text-2xl text-pink-200"></i><p class="text-[15px] leading-relaxed">${t}</p></div>`).join('');
+$('#coupons').innerHTML=CP.map(([i,t])=>`<div class="glass rounded-xl p-4 flex items-center gap-3 border-dashed"><i class="bi ${i} text-2xl text-amber-200"></i><span class="text-sm">${t}</span></div>`).join('');
+
+// Interactions
+$('#wish').onclick=()=>{shoot();setTimeout(shoot,300);$('#wt').textContent='✨ Wish-mu sudah dikirim ke bintang. Semoga terkabul, bareng aku.'};
+$('#env').onclick=()=>{$('#paper').classList.add('open');$('#envi').className='bi bi-envelope-open-heart-fill text-6xl text-pink-200 block';burst(25)};
+const no=$('#no');function run(){no.style.left=Math.random()*70+'%';no.style.top=Math.random()*60+'px'}
+no.onmouseenter=run;no.ontouchstart=e=>{e.preventDefault();run()};no.onclick=run;
+$('#yes').onclick=()=>{$('#ans').textContent='Yeay! Aku sudah tahu jawabannya dari awal 😌💙';burst(60)};
+let wi=-1;$('#whyb').onclick=()=>{wi=(wi+1+Math.floor(Math.random()*(WHY.length-1)))%WHY.length;$('#why').textContent=WHY[wi]};
+$('#gift').onclick=()=>{$('#coupons').classList.remove('hidden');$('#gh').textContent='Selamat! Simpan kuponnya baik-baik 💙';burst(70);$('#coupons').scrollIntoView({behavior:'smooth',block:'center'})};
+
+// Reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.15});
+const obs=()=>document.querySelectorAll('.rv').forEach(e=>io.observe(e));obs();
+
+// Loading
+document.body.style.overflow='hidden';
+const msgs=['Menghitung bintang…','Menata kenangan…','Menyelipkan rindu…','Hampir siap 💙'];let p=0;
+const iv=setInterval(()=>{p+=Math.random()*14+6;$('#bar').style.width=Math.min(p,100)+'%';$('#lt').textContent=msgs[Math.min(3,p/26|0)];
+ if(p>=100){clearInterval(iv);setTimeout(()=>{$('#load').style.opacity=0;document.body.style.overflow='';setTimeout(()=>$('#load').remove(),1000);shoot();burst(20)},400)}},300);
+</script>
+</body>
+</html>
